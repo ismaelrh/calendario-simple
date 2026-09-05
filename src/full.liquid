@@ -52,11 +52,11 @@
   {% comment %} === AGENDA LIST === {% endcomment %}
   {% if show_calendar_items == "all" %}
 
-  {% comment %} Next 3 days in grid columns {% endcomment %}
+  {% comment %} Next 6 days with events in a 3-column grid (2 rows) {% endcomment %}
   <div class="grid grid--cols-3 gap--large w--full pt--4 p--1">
     {% assign days_shown = 0 %}
     {% for day_data in days_data %}
-    {% if days_shown < 3 %}
+    {% if days_shown < 6 %}
       {% assign day_parts = day_data | split: "|" %}
       {% assign date = day_parts[0] %}
       {% assign day_num = day_parts[1] %}
