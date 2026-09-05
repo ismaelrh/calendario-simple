@@ -82,6 +82,8 @@ TRMNL Calendar Plugin - Shared Logic
   {% comment %} Count events on this day {% endcomment %}
   {% assign event_count = 0 %}
   {% for event in calendar_data.events %}
+    {% assign event_prefix = event.summary | slice: 0, 3 %}
+    {% unless event_prefix == "[R]" %}
     {% assign event_start_date = event.start_full | date: "%Y-%m-%d" %}
     {% assign event_end_date = event.end_full | date: "%Y-%m-%d" %}
     
@@ -95,6 +97,7 @@ TRMNL Calendar Plugin - Shared Logic
         {% assign event_count = event_count | plus: 1 %}
       {% endif %}
     {% endif %}
+    {% endunless %}
   {% endfor %}
   
   {% assign is_today = "false" %}

@@ -52,7 +52,7 @@
   {% comment %} === AGENDA LIST === {% endcomment %}
   {% if show_calendar_items == "all" %}
 
-  {% comment %} Next 6 days with events in a 3-column grid (2 rows) {% endcomment %}
+  {% comment %} Next 3 days in grid columns {% endcomment %}
   <div class="grid grid--cols-3 gap--large w--full pt--4 p--1">
     {% assign days_shown = 0 %}
     {% for day_data in days_data %}
@@ -73,22 +73,28 @@
 
       {% comment %} Check for ongoing multi-day events {% endcomment %}
       {% for event in calendar_data.events %}
+      {% assign event_prefix = event.summary | slice: 0, 3 %}
+      {% unless event_prefix == "[R]" %}
       {% assign event_start_date = event.start_full | date: "%Y-%m-%d" %}
       {% assign event_end_date = event.end_full | date: "%Y-%m-%d" %}
       {% if event.all_day and date >= event_start_date and date < event_end_date %}
                                                                   {% assign has_day_events = true %}
                                                                   {% break %}
                                                                   {% endif %}
-                                                                  {% endfor %}
+      {% endunless %}
+      {% endfor %}
 
                                                                   {% comment %} Check for timed events {% endcomment %}
                                                                   {% unless has_day_events %}
                                                                   {% for event in calendar_data.events %}
+                                                                  {% assign event_prefix = event.summary | slice: 0, 3 %}
+                                                                  {% unless event_prefix == "[R]" %}
                                                                   {% assign event_date = event.date_time | date: "%Y-%m-%d" %}
         {% if event_date == date and event.all_day == false %}
         {% assign has_day_events = true %}
         {% break %}
         {% endif %}
+        {% endunless %}
         {% endfor %}
         {% endunless %}
 
@@ -101,6 +107,8 @@
 
           {% comment %} All-day events (including ongoing) {% endcomment %}
           {% for event in calendar_data.events %}
+          {% assign event_prefix = event.summary | slice: 0, 3 %}
+          {% unless event_prefix == "[R]" %}
           {% assign event_start_date = event.start_full | date: "%Y-%m-%d" %}
           {% assign event_end_date = event.end_full | date: "%Y-%m-%d" %}
 
@@ -123,10 +131,13 @@
               {% endif %}
             </div>
             {% endif %}
+            {% endunless %}
             {% endfor %}
 
             {% comment %} Timed events {% endcomment %}
             {% for event in calendar_data.events %}
+            {% assign event_prefix = event.summary | slice: 0, 3 %}
+            {% unless event_prefix == "[R]" %}
             {% assign event_date = event.date_time | date: "%Y-%m-%d" %}
             {% if event_date == date and event.all_day == false %}
 
@@ -173,7 +184,8 @@
               {% endif %}
             </div>
             {% endif %}
-            {% endfor %}
+              {% endunless %}
+              {% endfor %}
         </div>
 
         {% assign days_shown = days_shown | plus: 1 %}
@@ -193,6 +205,8 @@
 
           {% comment %} All-day events (including ongoing) {% endcomment %}
           {% for event in calendar_data.events %}
+          {% assign event_prefix = event.summary | slice: 0, 3 %}
+          {% unless event_prefix == "[R]" %}
           {% assign event_start_date = event.start_full | date: "%Y-%m-%d" %}
           {% assign event_end_date = event.end_full | date: "%Y-%m-%d" %}
 
@@ -215,10 +229,13 @@
               {% endif %}
             </div>
             {% endif %}
+            {% endunless %}
             {% endfor %}
 
             {% comment %} Timed events {% endcomment %}
             {% for event in calendar_data.events %}
+            {% assign event_prefix = event.summary | slice: 0, 3 %}
+            {% unless event_prefix == "[R]" %}
             {% assign event_date = event.date_time | date: "%Y-%m-%d" %}
             {% if event_date == current_date and event.all_day == false %}
             {% assign has_events = true %}
@@ -266,6 +283,7 @@
               {% endif %}
             </div>
             {% endif %}
+            {% endunless %}
             {% endfor %}
             {% if has_events == false %}
             <div class="w--full h--full flex flex--col flex--center-y flex--center-x text--center py--10">
